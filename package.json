@@ -1,0 +1,28 @@
+{
+  "name": "hum-couchdb",
+  "version": "0.0.0",
+  "description": "A small, promise-based CouchDB client",
+  "main": "lib/index.js",
+  "dependencies": {
+    "q": "0.9.0"
+  },
+  "devDependencies": {
+    "mocha": "1.8.1",
+    "mocha-as-promised": "1.2.1"
+  },
+  "scripts": {
+    "test": "mocha spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mjijackson/hum-couchdb.git"
+  },
+  "keywords": [
+    "couch",
+    "couchdb",
+    "promise",
+    "promises"
+  ],
+  "author": "Michael Jackson",
+  "license": "MIT"
+}
