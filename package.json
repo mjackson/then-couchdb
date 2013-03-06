@@ -1,6 +1,6 @@
 {
   "name": "then-couchdb",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A small, promise-based CouchDB client",
   "main": "lib/index.js",
   "dependencies": {
@@ -18,8 +18,9 @@
     "url": "git://github.com/mjijackson/then-couchdb.git"
   },
   "keywords": [
-    "couch",
     "couchdb",
+    "couch",
+    "then",
     "promise",
     "promises"
   ],
