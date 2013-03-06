@@ -11,6 +11,7 @@ describe('get', function () {
     });
 
     it('returns the document', function () {
+      assert(doc._id);
       return db.get(doc._id).then(function (newDoc) {
         assert(newDoc);
         compareDocs(newDoc, doc);
