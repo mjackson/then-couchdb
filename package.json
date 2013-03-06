@@ -1,5 +1,5 @@
 {
-  "name": "hum-couchdb",
+  "name": "then-couchdb",
   "version": "0.0.0",
   "description": "A small, promise-based CouchDB client",
   "main": "lib/index.js",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/mjijackson/hum-couchdb.git"
+    "url": "git://github.com/mjijackson/then-couchdb.git"
   },
   "keywords": [
     "couch",
