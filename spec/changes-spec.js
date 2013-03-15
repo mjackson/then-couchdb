@@ -28,7 +28,7 @@ describe('continuous changes', function () {
 
       return db.save({ message: message }).then(function (newDoc) {
         doc = newDoc;
-        return q.delay(10);
+        return delay(10);
       });
     });
 
@@ -40,3 +40,15 @@ describe('continuous changes', function () {
     });
   });
 });
+
+var Promise = require('rsvp').Promise;
+
+function delay(n) {
+  var promise = new Promise;
+
+  setTimeout(function () {
+    promise.resolve();
+  }, n);
+
+  return promise;
+}

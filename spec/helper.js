@@ -1,5 +1,4 @@
 assert = require('assert');
-q = require('q');
 couchdb = require('../lib');
 
 // Override mocha's built-in methods with promise-aware versions.
