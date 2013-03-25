@@ -4,7 +4,7 @@
   "description": "A small, promise-based CouchDB client",
   "main": "lib/index.js",
   "dependencies": {
-    "rsvp": "1.2.x"
+    "when": "2.0.x"
   },
   "devDependencies": {
     "mocha": "1.8.1",
@@ -24,6 +24,9 @@
     "promise",
     "promises"
   ],
+  "engines": {
+    "node": "0.10.x"
+  },
   "author": "Michael Jackson",
   "license": "MIT"
 }
