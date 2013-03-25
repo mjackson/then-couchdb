@@ -1,4 +1,5 @@
 require('./helper');
+var delay = require('when/delay');
 
 describe('continuous changes', function () {
   var numFrames, changes;
@@ -28,7 +29,7 @@ describe('continuous changes', function () {
 
       return db.save({ message: message }).then(function (newDoc) {
         doc = newDoc;
-        return delay(10);
+        return delay(null, 10);
       });
     });
 
@@ -40,15 +41,3 @@ describe('continuous changes', function () {
     });
   });
 });
-
-var Promise = require('rsvp').Promise;
-
-function delay(n) {
-  var promise = new Promise;
-
-  setTimeout(function () {
-    promise.resolve();
-  }, n);
-
-  return promise;
-}
