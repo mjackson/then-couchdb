@@ -2,10 +2,9 @@ var when = require('when');
 var delay = require('when/delay');
 module.exports = describeCache;
 
-function describeCache(cacheClass) {
-  var cache;
+function describeCache(cache) {
   beforeEach(function () {
-    cache = new cacheClass;
+    cache.purge();
   });
 
   describe('when it does not contain a given key', function () {

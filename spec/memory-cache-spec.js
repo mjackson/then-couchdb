@@ -1,6 +1,7 @@
 require('./helper');
 var describeCache = require('./describe-cache');
+var MemoryCache = couchdb.MemoryCache;
 
 describe('MemoryCache', function () {
-  describeCache(couchdb.MemoryCache);
+  describeCache(new MemoryCache);
 });
