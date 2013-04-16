@@ -33,7 +33,7 @@ describe('MemoryCache', function () {
 
   describe('when it contains a key that is expired', function () {
     beforeEach(function () {
-      cache.expiry = 1; // expire after 1ms
+      cache.ttl = 1; // expire after 1ms
       return when(cache.set('a-key', 'a value')).then(function () {
         return delay(5);
       });

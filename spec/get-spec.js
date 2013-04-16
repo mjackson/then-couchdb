@@ -1,7 +1,7 @@
 require('./helper');
 
 describe('get', function () {
-  describe('when a document with the given id exists', function () {
+  describe('when a document with the given key exists', function () {
     var doc;
     beforeEach(function () {
       return db.save({ name: 'a test' }).then(function (newDoc) {
@@ -19,7 +19,7 @@ describe('get', function () {
     });
   });
 
-  describe('when a document with the given id does not exist', function () {
+  describe('when a document with the given key does not exist', function () {
     it('returns null', function () {
       return db.get('does-not-exist').then(function (doc) {
         assert.strictEqual(doc, null);
