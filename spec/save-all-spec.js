@@ -2,11 +2,11 @@ require('./helper');
 var when = require('when');
 var MemoryCache = couchdb.MemoryCache;
 
-describe('bulkDocs', function () {
+describe('saveAll', function () {
   describe('saving many documents', function () {
     var docs;
     beforeEach(function () {
-      return db.bulkDocs([
+      return db.saveAll([
         { name: 'one' },
         { name: 'two' }
       ]).then(function (newDocs) {
@@ -16,7 +16,7 @@ describe('bulkDocs', function () {
 
     it('updates the _rev of all documents', function () {
       var revs = docs.map(getRev);
-      return db.bulkDocs(docs).then(function (newDocs) {
+      return db.saveAll(docs).then(function (newDocs) {
         var newRevs = newDocs.map(getRev);
         newRevs.forEach(function (rev, i) {
           assert.notEqual(rev, revs[i]);
@@ -28,7 +28,7 @@ describe('bulkDocs', function () {
   describe('saving deleted documents', function () {
     var docs;
     beforeEach(function () {
-      return db.bulkDocs([
+      return db.saveAll([
         { name: 'one', _deleted: true },
         { name: 'two', _deleted: true }
       ]).then(function (newDocs) {
@@ -38,7 +38,7 @@ describe('bulkDocs', function () {
 
     it('updates the _rev of all documents', function () {
       var revs = docs.map(getRev);
-      return db.bulkDocs(docs).then(function (newDocs) {
+      return db.saveAll(docs).then(function (newDocs) {
         var newRevs = newDocs.map(getRev);
         newRevs.forEach(function (rev, i) {
           assert.notEqual(rev, revs[i]);
@@ -61,7 +61,7 @@ describe('bulkDocs', function () {
     describe('saving documents', function () {
       var docs;
       beforeEach(function () {
-        return db.bulkDocs([
+        return db.saveAll([
           { name: 'one' },
           { name: 'two' }
         ]).then(function (newDocs) {
@@ -85,7 +85,7 @@ describe('bulkDocs', function () {
     describe('saving deleted documents', function () {
       var docs;
       beforeEach(function () {
-        return db.bulkDocs([
+        return db.saveAll([
           { name: 'one', _deleted: true },
           { name: 'two', _deleted: true }
         ]).then(function (newDocs) {

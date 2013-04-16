@@ -14,7 +14,7 @@ describe('viewDocs', function () {
   describe('when there are docs that match the given query', function () {
     var docs;
     beforeEach(function () {
-      return db.bulkDocs([
+      return db.saveAll([
         { message: 'a' },
         { message: 'b' },
         { message: 'c' }
