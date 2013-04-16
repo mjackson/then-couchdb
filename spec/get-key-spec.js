@@ -70,6 +70,6 @@ describe('getKey', function () {
         });
       });
     });
-  });
+  }); // when using a cache
 
 });
