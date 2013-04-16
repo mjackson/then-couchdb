@@ -26,7 +26,7 @@ describe('getKeys', function () {
     });
   });
 
-  describe('when one key is missing', function () {
+  describe('when a key is missing', function () {
     it('returns null', function () {
       return db.getKeys([ 'does-not-exist' ]).then(function (newDocs) {
         assert.equal(newDocs.length, 1);
@@ -74,5 +74,33 @@ describe('getKeys', function () {
         });
       });
     });
-  });
+
+    describe('when a key is missing', function () {
+      var docs, keys;
+      beforeEach(function () {
+        return db.bulkDocs([ { name: 'one' } ]).then(function (newDocs) {
+          docs = newDocs;
+          keys = docs.map(function (doc) {
+            return doc._id;
+          }).concat([ 'does-not-exist' ]);
+        });
+      });
+
+      it('returns the existing documents and null for the missing document', function () {
+        return db.getKeys(keys).then(function (newDocs) {
+          assert.equal(newDocs.length, 2);
+          compareDocs(newDocs[0], docs[0]);
+          assert.strictEqual(newDocs[1], null);
+        });
+      });
+
+      it('hits the cache for existing documents', function () {
+        assert.equal(db.cacheHits, 0);
+        return db.getKeys(keys).then(function (newDocs) {
+          assert.equal(db.cacheHits, 1);
+        });
+      });
+    });
+  }); // when using a cache
+
 });
