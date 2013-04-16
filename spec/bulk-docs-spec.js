@@ -83,7 +83,27 @@ describe('bulkDocs', function () {
     });
 
     describe('saving deleted documents', function () {
-      it('does not store them in cache');
+      var docs;
+      beforeEach(function () {
+        return db.bulkDocs([
+          { name: 'one', _deleted: true },
+          { name: 'two', _deleted: true }
+        ]).then(function (newDocs) {
+          docs = newDocs;
+        });
+      });
+
+      it('does not store them in cache', function () {
+        var promises = docs.map(function (doc) {
+          return cache.get(doc._id);
+        });
+
+        return when.all(promises).then(function (values) {
+          values.forEach(function (value) {
+            assert.equal(value, undefined);
+          });
+        });
+      });
     });
 
   }); // when using a cache
