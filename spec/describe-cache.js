@@ -4,7 +4,13 @@ module.exports = describeCache;
 
 function describeCache(cache) {
   beforeEach(function () {
-    cache.purge();
+    return cache.purge();
+  });
+
+  after(function () {
+    if (typeof cache.destroy === 'function') {
+      return cache.destroy();
+    }
   });
 
   describe('when it does not contain a given key', function () {

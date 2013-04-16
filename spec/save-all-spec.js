@@ -51,11 +51,11 @@ describe('saveAll', function () {
     var cache;
     beforeEach(function () {
       cache = new MemoryCache;
-      db.useCache(cache);
+      return db.useCache(cache);
     });
 
     afterEach(function () {
-      db.stopCaching();
+      return db.stopCaching();
     });
 
     describe('saving documents', function () {

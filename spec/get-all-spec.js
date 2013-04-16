@@ -37,11 +37,11 @@ describe('getAll', function () {
 
   describe('when using a cache', function () {
     beforeEach(function () {
-      db.useCache(new MemoryCache);
+      return db.useCache(new MemoryCache);
     });
 
     afterEach(function () {
-      db.stopCaching();
+      return db.stopCaching();
     });
 
     describe('when all documents with the given keys exist', function () {

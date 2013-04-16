@@ -30,11 +30,11 @@ describe('get', function () {
 
   describe('when using a cache', function () {
     beforeEach(function () {
-      db.useCache(new MemoryCache);
+      return db.useCache(new MemoryCache);
     });
 
     afterEach(function () {
-      db.stopCaching();
+      return db.stopCaching();
     });
 
     describe('when a document with the given key exists', function () {
