@@ -4,7 +4,8 @@
   "description": "A promise-based CouchDB client",
   "main": "lib/index.js",
   "dependencies": {
-    "when": "2.0.x"
+    "when": "2.0.x",
+    "then-redis": "0.3.x"
   },
   "devDependencies": {
     "mocha": "1.8.1",
