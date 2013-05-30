@@ -8,9 +8,7 @@ function describeCache(cache) {
   });
 
   after(function () {
-    if (typeof cache.destroy === 'function') {
-      return cache.destroy();
-    }
+    return cache.destroy();
   });
 
   describe('when it does not contain a given key', function () {
