@@ -36,8 +36,10 @@ describe('getAll', function () {
   });
 
   describe('when using a cache', function () {
+    var cache;
     beforeEach(function () {
-      return db.useCache(new MemoryCache);
+      cache = new MemoryCache;
+      return db.useCache(cache);
     });
 
     afterEach(function () {
@@ -68,9 +70,9 @@ describe('getAll', function () {
       });
 
       it('hits the cache', function () {
-        assert.equal(db.cacheHits, 0);
+        assert.equal(cache.hits, 0);
         return db.getAll(keys).then(function (newDocs) {
-          assert.equal(db.cacheHits, keys.length);
+          assert.equal(cache.hits, keys.length);
         });
       });
     });
@@ -95,9 +97,9 @@ describe('getAll', function () {
       });
 
       it('hits the cache for existing documents', function () {
-        assert.equal(db.cacheHits, 0);
+        assert.equal(cache.hits, 0);
         return db.getAll(keys).then(function (newDocs) {
-          assert.equal(db.cacheHits, 1);
+          assert.equal(cache.hits, 1);
         });
       });
     });

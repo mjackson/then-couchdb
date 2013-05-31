@@ -29,8 +29,10 @@ describe('get', function () {
   });
 
   describe('when using a cache', function () {
+    var cache;
     beforeEach(function () {
-      return db.useCache(new MemoryCache);
+      cache = new MemoryCache;
+      return db.useCache(cache);
     });
 
     afterEach(function () {
@@ -55,9 +57,9 @@ describe('get', function () {
       });
 
       it('hits the cache', function () {
-        assert.equal(db.cacheHits, 0);
+        assert.equal(cache.hits, 0);
         return db.get(doc._id).then(function (newDoc) {
-          assert.equal(db.cacheHits, 1);
+          assert.equal(cache.hits, 1);
         });
       });
     });

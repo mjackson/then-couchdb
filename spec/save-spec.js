@@ -59,8 +59,8 @@ describe('save', function () {
       });
 
       it('stores the document in cache', function () {
-        return when(cache.get(doc._id), function (value) {
-          compareDocs(value, doc);
+        return when(cache.get([ doc._id ]), function (values) {
+          compareDocs(values[0], doc);
         });
       });
     });
@@ -74,8 +74,8 @@ describe('save', function () {
       });
 
       it('does not store the document in cache', function () {
-        return when(cache.get(doc._id), function (value) {
-          assert.equal(value, undefined);
+        return when(cache.get([ doc._id ]), function (values) {
+          assert.deepEqual(values, [ undefined ]);
         });
       });
     });

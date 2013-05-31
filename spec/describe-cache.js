@@ -13,8 +13,8 @@ function describeCache(cache) {
 
   describe('when it does not contain a given key', function () {
     it('returns undefined', function () {
-      return when(cache.get('a-key'), function (value) {
-        assert.strictEqual(value, undefined);
+      return when(cache.get([ 'a-key' ]), function (values) {
+        assert.deepEqual(values, [ undefined ]);
       });
     });
   });
@@ -27,8 +27,24 @@ function describeCache(cache) {
     });
 
     it('returns the value of that key', function () {
-      return when(cache.get('a-key'), function (newValue) {
-        assert.strictEqual(newValue, value);
+      return when(cache.get([ 'a-key' ]), function (values) {
+        assert.deepEqual(values, [ value ]);
+      });
+    });
+  });
+
+  describe('when it contains many keys', function () {
+    beforeEach(function () {
+      return when.all([
+        cache.set('a', 'a'),
+        cache.set('b', 'b'),
+        cache.set('c', 'c')
+      ]);
+    });
+
+    it('returns values for those that are defined and undefined for those that are not', function () {
+      return when(cache.get([ 'a', 'b', 'd' ]), function (values) {
+        assert.deepEqual(values, [ 'a', 'b', undefined ]);
       });
     });
   });
@@ -39,14 +55,14 @@ function describeCache(cache) {
         return 1; // expire all values after 1ms
       };
 
-      return when(cache.set('a-key', 'a value')).then(function () {
+      return when(cache.set({ 'a-key': 'a value' })).then(function () {
         return delay(5);
       });
     });
 
     it('returns undefined', function () {
-      return when(cache.get('a-key'), function (value) {
-        assert.strictEqual(value, undefined);
+      return when(cache.get([ 'a-key' ]), function (values) {
+        assert.deepEqual(values, [ undefined ]);
       });
     });
   });

@@ -70,11 +70,11 @@ describe('saveAll', function () {
       });
 
       it('stores them in cache', function () {
-        var promises = docs.map(function (doc) {
-          return cache.get(doc._id);
+        var keys = docs.map(function (doc) {
+          return doc._id;
         });
 
-        return when.all(promises).then(function (values) {
+        return when(cache.get(keys), function (values) {
           values.forEach(function (value, i) {
             compareDocs(value, docs[i]);
           });
@@ -94,11 +94,11 @@ describe('saveAll', function () {
       });
 
       it('does not store them in cache', function () {
-        var promises = docs.map(function (doc) {
-          return cache.get(doc._id);
+        var keys = docs.map(function (doc) {
+          return doc._id;
         });
 
-        return when.all(promises).then(function (values) {
+        return when(cache.get(keys), function (values) {
           values.forEach(function (value) {
             assert.equal(value, undefined);
           });
