@@ -26,3 +26,11 @@ describe('uuids', function () {
     });
   });
 });
+
+describe('uuid', function () {
+  it('returns a new UUID', function () {
+    return db.uuid().then(function (uuid) {
+      assert.equal(typeof uuid, 'string');
+    });
+  });
+});
