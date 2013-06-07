@@ -1,6 +1,6 @@
 {
   "name": "then-couchdb",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "A promise-based CouchDB client",
   "main": "lib/index.js",
   "dependencies": {
