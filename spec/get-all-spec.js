@@ -1,5 +1,4 @@
 require('./helper');
-var when = require('when');
 var MemoryCache = couchdb.MemoryCache;
 
 describe('getAll', function () {

@@ -1,5 +1,4 @@
-var when = require('when');
-var delay = require('when/delay');
+var RSVP = require('rsvp');
 module.exports = describeCache;
 
 function describeCache(cache) {
@@ -13,7 +12,7 @@ function describeCache(cache) {
 
   describe('when it does not contain a given key', function () {
     it('returns undefined', function () {
-      return when(cache.get([ 'a-key' ]), function (values) {
+      return RSVP.resolve(cache.get([ 'a-key' ])).then(function (values) {
         assert.deepEqual(values, [ undefined ]);
       });
     });
@@ -23,11 +22,11 @@ function describeCache(cache) {
     var value;
     beforeEach(function () {
       value = 'a value';
-      return when(cache.set('a-key', value));
+      return RSVP.resolve(cache.set('a-key', value));
     });
 
     it('returns the value of that key', function () {
-      return when(cache.get([ 'a-key' ]), function (values) {
+      return RSVP.resolve(cache.get([ 'a-key' ])).then(function (values) {
         assert.deepEqual(values, [ value ]);
       });
     });
@@ -35,7 +34,7 @@ function describeCache(cache) {
 
   describe('when it contains many keys', function () {
     beforeEach(function () {
-      return when.all([
+      return RSVP.all([
         cache.set('a', 'a'),
         cache.set('b', 'b'),
         cache.set('c', 'c')
@@ -43,7 +42,7 @@ function describeCache(cache) {
     });
 
     it('returns values for those that are defined and undefined for those that are not', function () {
-      return when(cache.get([ 'a', 'b', 'd' ]), function (values) {
+      return RSVP.resolve(cache.get([ 'a', 'b', 'd' ])).then(function (values) {
         assert.deepEqual(values, [ 'a', 'b', undefined ]);
       });
     });
@@ -55,13 +54,13 @@ function describeCache(cache) {
         return 1; // expire all values after 1ms
       };
 
-      return when(cache.set({ 'a-key': 'a value' })).then(function () {
-        return delay(5);
+      return RSVP.resolve(cache.set({ 'a-key': 'a value' })).then(function () {
+        return wait(5);
       });
     });
 
     it('returns undefined', function () {
-      return when(cache.get([ 'a-key' ]), function (values) {
+      return RSVP.resolve(cache.get([ 'a-key' ])).then(function (values) {
         assert.deepEqual(values, [ undefined ]);
       });
     });

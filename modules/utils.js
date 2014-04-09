@@ -1,45 +1,44 @@
 var assert = require('assert');
-var when = require('when');
-var _slice = Array.prototype.slice;
-var utils = module.exports;
 
-utils.docToJson = docToJson;
-function docToJson(doc) {
+exports.docToJson = function (doc) {
   return JSON.stringify(doc, function (key, value) {
-    return (typeof value === 'function') ? value.toString() : value;
-  });
-}
+    if (typeof value === 'function')
+      return value.toString();
 
-utils.docsAreEqual = docsAreEqual;
-function docsAreEqual(one, two) {
+    return value;
+  });
+};
+
+exports.docsAreEqual = function (one, two) {
   try {
-    assert.deepEqual(normalize(one), normalize(two));
+    assert.deepEqual(normalizeDocument(one), normalizeDocument(two));
     return true;
   } catch (err) {
     return false;
   }
+};
+
+function normalizeDocument(doc) {
+  return JSON.parse(exports.docToJson(doc));
 }
 
-function normalize(doc) {
-  return JSON.parse(utils.docToJson(doc));
-}
+var _slice = Array.prototype.slice;
 
-utils.merge = merge;
-function merge(object) {
+exports.merge = function (object) {
   _slice.call(arguments, 1).forEach(function (obj) {
     for (var prop in obj) {
-      if (obj.hasOwnProperty(prop)) {
+      if (obj.hasOwnProperty(prop))
         object[prop] = obj[prop];
-      }
     }
   });
 
   return object;
-}
+};
 
-utils.bufferStream = bufferStream;
-function bufferStream(stream) {
-  var value = when.defer();
+var RSVP = require('rsvp');
+
+exports.bufferStream = function (stream) {
+  var deferred = RSVP.defer();
   var chunks = [];
 
   stream.on('data', function (chunk) {
@@ -47,12 +46,12 @@ function bufferStream(stream) {
   });
 
   stream.on('end', function () {
-    value.resolve(Buffer.concat(chunks));
+    deferred.resolve(Buffer.concat(chunks));
   });
 
   stream.on('error', function (error) {
-    value.reject(error);
+    deferred.reject(error);
   });
 
-  return value.promise;
-}
+  return deferred.promise;
+};

@@ -1,5 +1,5 @@
 require('./helper');
-var when = require('when');
+var RSVP = require('rsvp');
 var MemoryCache = couchdb.MemoryCache;
 
 describe('save', function () {
@@ -59,7 +59,7 @@ describe('save', function () {
       });
 
       it('stores the document in cache', function () {
-        return when(cache.get([ doc._id ]), function (values) {
+        return RSVP.resolve(cache.get([ doc._id ])).then(function (values) {
           compareDocs(values[0], doc);
         });
       });
@@ -74,7 +74,7 @@ describe('save', function () {
       });
 
       it('does not store the document in cache', function () {
-        return when(cache.get([ doc._id ]), function (values) {
+        return RSVP.resolve(cache.get([ doc._id ])).then(function (values) {
           assert.deepEqual(values, [ undefined ]);
         });
       });

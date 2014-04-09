@@ -2,7 +2,7 @@ var url = require('url');
 var http = require('http');
 var https = require('https');
 var qs = require('querystring');
-var when = require('when');
+var RSVP = require('rsvp');
 var Cache = require('./cache');
 var MemoryCache = require('./memory-cache');
 var utils = require('./utils');
@@ -147,12 +147,12 @@ Client.prototype.rootRequest = function (options) {
   if (this.debug)
     console.log('couchdb: ' + params.method + ' ' + params.path);
 
-  var value = when.defer();
+  var deferred = RSVP.defer();
   var request = this.transport.request(params, function (response) {
     var code = response.statusCode;
 
     if (code >= 200 && code < 400) {
-      value.resolve(response);
+      deferred.resolve(response);
     } else {
       getDoc(response).then(function (data) {
         var error;
@@ -167,9 +167,9 @@ Client.prototype.rootRequest = function (options) {
         error.statusCode = code;
         error.requestLine = request.method + ' ' + request.path;
 
-        value.reject(error);
+        deferred.reject(error);
       }, function (error) {
-        value.reject(error);
+        deferred.reject(error);
       });
     }
   });
@@ -185,7 +185,7 @@ Client.prototype.rootRequest = function (options) {
     request.end();
   }
 
-  return value.promise;
+  return deferred.promise;
 };
 
 /**
@@ -221,7 +221,7 @@ Client.prototype.uuids = function (count) {
     });
   }
 
-  return when(cache.splice(0, count));
+  return RSVP.resolve(cache.splice(0, count));
 };
 
 /**
@@ -301,7 +301,7 @@ Client.prototype.save = function (doc) {
         promise = cache.set(doc._id, doc);
       }
 
-      return when(promise, function () {
+      return RSVP.resolve(promise).then(function () {
         return doc;
       });
     }
@@ -316,7 +316,7 @@ Client.prototype.save = function (doc) {
  */
 Client.prototype.saveAll = function (docs) {
   if (!docs || !docs.length)
-    return when([]);
+    return RSVP.resolve([]);
 
   var options = {};
   options.method = 'POST';
@@ -348,7 +348,7 @@ Client.prototype.saveAll = function (docs) {
       return doc;
     });
 
-    return when.all(promises).then(function () {
+    return RSVP.all(promises).then(function () {
       return updatedDocs;
     });
   });
@@ -431,7 +431,7 @@ Client.prototype.get = function (key, query) {
     return getKey(this, key, query);
 
   var client = this;
-  return when(cache.get([ key ]), function (docs) {
+  return RSVP.resolve(cache.get([ key ])).then(function (docs) {
     var doc = docs[0];
 
     if (doc !== undefined)
@@ -442,7 +442,7 @@ Client.prototype.get = function (key, query) {
         return doc;
 
       // Store in cache for next time.
-      return when(cache.set(key, doc), function () {
+      return RSVP.resolve(cache.set(key, doc)).then(function () {
         return doc;
       });
     });
@@ -466,7 +466,8 @@ function getKey(client, key, query) {
  * contains null for documents that are not found.
  */
 Client.prototype.getAll = function (keys) {
-  if (!keys || !keys.length) return when([]);
+  if (!keys || !keys.length)
+    return RSVP.resolve([]);
 
   var cache = this.cache;
 
@@ -474,7 +475,7 @@ Client.prototype.getAll = function (keys) {
     return getKeys(this, keys);
 
   var client = this;
-  return when(cache.get(keys), function (docs) {
+  return RSVP.resolve(cache.get(keys)).then(function (docs) {
     var missingKeys = keys.filter(function (key, index) {
       return docs[index] === undefined;
     });
@@ -496,7 +497,7 @@ Client.prototype.getAll = function (keys) {
           docs[index] = missingDocs.shift();
       });
 
-      return when.all(promises).then(function () {
+      return RSVP.all(promises).then(function () {
         return docs;
       });
     });
@@ -794,9 +795,8 @@ util.inherits(DocumentStream, EventEmitter);
 DocumentStream.prototype.stop = function () {
   this.isStopped = true;
 
-  if (this.response) {
+  if (this.response)
     this.response.end();
-  }
 };
 
 function isFunction(object) {

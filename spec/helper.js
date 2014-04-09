@@ -41,3 +41,13 @@ afterEach(function () {
 compareDocs = function (existingDoc, doc, message) {
   assert(couchdb.docsAreEqual(existingDoc, doc), message);
 };
+
+var RSVP = require('rsvp');
+
+wait = function (ms) {
+  var deferred = RSVP.defer();
+
+  setTimeout(deferred.resolve, ms);
+
+  return deferred.promise;
+};

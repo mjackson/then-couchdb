@@ -1,5 +1,5 @@
 require('./helper');
-var when = require('when');
+var RSVP = require('rsvp');
 var MemoryCache = couchdb.MemoryCache;
 
 describe('saveAll', function () {
@@ -74,7 +74,7 @@ describe('saveAll', function () {
           return doc._id;
         });
 
-        return when(cache.get(keys), function (values) {
+        return RSVP.resolve(cache.get(keys)).then(function (values) {
           values.forEach(function (value, i) {
             compareDocs(value, docs[i]);
           });
@@ -98,7 +98,7 @@ describe('saveAll', function () {
           return doc._id;
         });
 
-        return when(cache.get(keys), function (values) {
+        return RSVP.resolve(cache.get(keys)).then(function (values) {
           values.forEach(function (value) {
             assert.equal(value, undefined);
           });

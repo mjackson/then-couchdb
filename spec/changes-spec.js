@@ -1,5 +1,4 @@
 require('./helper');
-var delay = require('when/delay');
 
 describe('continuous changes', function () {
   var numFrames, changes;
@@ -29,7 +28,7 @@ describe('continuous changes', function () {
 
       return db.save({ message: message }).then(function (newDoc) {
         doc = newDoc;
-        return delay(null, 10);
+        return wait(10);
       });
     });
 

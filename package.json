@@ -4,7 +4,7 @@
   "description": "A promise-based CouchDB client",
   "main": "modules/index.js",
   "dependencies": {
-    "when": "2.0.x",
+    "rsvp": "3.0.x",
     "then-redis": "0.3.x"
   },
   "devDependencies": {
