@@ -174,12 +174,13 @@ Client.prototype.rootRequest = function (options) {
     }
   });
 
-  var body = options.body;
-  if (body) {
-    if (isFunction(body.pipe)) {
-      body.pipe(request);
+  var content = options.content || options.body; // body is deprecated
+
+  if (content) {
+    if (isFunction(content.pipe)) {
+      content.pipe(request);
     } else {
-      request.end(body);
+      request.end(content);
     }
   } else {
     request.end();
@@ -282,10 +283,10 @@ Client.prototype.save = function (doc) {
     options.method = 'POST';
   }
 
-  options.body = utils.docToJson(doc);
+  options.content = utils.docToJson(doc);
   options.headers = {
     'Content-Type': 'application/json',
-    'Content-Length': Buffer.byteLength(options.body)
+    'Content-Length': Buffer.byteLength(options.content)
   };
 
   var cache = this.cache;
@@ -321,7 +322,7 @@ Client.prototype.saveAll = function (docs) {
   var options = {};
   options.method = 'POST';
   options.path = '/_bulk_docs';
-  options.body = utils.docToJson({ docs: docs });
+  options.content = utils.docToJson({ docs: docs });
   options.headers = { 'Content-Type': 'application/json' };
 
   var cache = this.cache;
@@ -374,10 +375,10 @@ Client.prototype.update = function (updateHandler, doc) {
       options.path += '/' + encodeKey(doc._id);
     }
 
-    options.body = utils.docToJson(doc);
+    options.content = utils.docToJson(doc);
     options.headers = {
       'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(options.body)
+      'Content-Length': Buffer.byteLength(options.content)
     };
   }
 
@@ -530,13 +531,17 @@ Client.prototype.view = function (designView, query) {
 
   if (query) {
     // Try to avoid query strings that are too long by encoding the keys
-    // as JSON and putting them in a POST body.
+    // as JSON and putting them in a POST content.
     // http://wiki.apache.org/couchdb/HTTP_view_API#Querying_Options
     if (query.keys && encodeQuery(query).length > MAX_QUERY_STRING_LENGTH) {
       options.method = 'POST';
-      options.body = JSON.stringify({ keys: query.keys });
-      if (!options.headers) options.headers = {};
+      options.content = JSON.stringify({ keys: query.keys });
+
+      if (!options.headers)
+        options.headers = {};
+      
       options.headers['Content-Type'] = 'application/json';
+
       delete query.keys;
     }
 
@@ -638,14 +643,14 @@ Client.prototype.getAttachment = function (doc, name) {
 
 /**
  * Creates/updates an attachment with the given `name` on the given document.
- * The `body` should be the entire contents of the attachment as a string or a
+ * The `content` should be the entire contents of the attachment as a string or a
  * readable stream for its contents. Returns a promise for the document that is
  * returned (see http://wiki.apache.org/couchdb/HTTP_Document_API#Standalone_Attachments).
  *
  * NOTE: It is NOT safe to save the same document again without deleting the
  * attachment since it will not have the _attachments property.
  */
-Client.prototype.putAttachment = function (doc, name, type, size, body) {
+Client.prototype.putAttachment = function (doc, name, type, size, content) {
   var query;
 
   if (doc._rev)
@@ -656,7 +661,7 @@ Client.prototype.putAttachment = function (doc, name, type, size, body) {
     path: makeAttachmentPath(doc._id, name),
     headers: { 'Content-Type': type, 'Content-Length': size },
     query: query,
-    body: body
+    content: content
   }).then(getDoc);
 };
 
@@ -727,13 +732,15 @@ function prepareQuery(query) {
 
 function getDoc(response) {
   return utils.bufferStream(response).then(function (buffer) {
-    var body = buffer.toString();
-    if (body === '') return null;
+    var content = buffer.toString();
+
+    if (content === '')
+      return null;
 
     try {
-      return JSON.parse(body);
+      return JSON.parse(content);
     } catch (error) {
-      console.log('Parse error: ' + error + ', body: ' + body);
+      console.log('Parse error: ' + error + ', content: ' + content);
       return null;
     }
   });
