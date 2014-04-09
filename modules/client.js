@@ -481,7 +481,8 @@ Client.prototype.getAll = function (keys) {
       return docs[index] === undefined;
     });
 
-    if (!missingKeys.length) return docs; // All keys were cached!
+    if (!missingKeys.length)
+      return docs; // All keys were cached!
 
     return getKeys(client, missingKeys).then(function (missingDocs) {
       // Cache all docs that were found for next time.
@@ -708,8 +709,10 @@ function encodeKey(key) {
   return isDesignKey(key) ? key : encodeURIComponent(key);
 }
 
+var designKeyFormat = /^_design\//;
+
 function isDesignKey(key) {
-  return (/^_design\//).test(key);
+  return designKeyFormat.test(key);
 }
 
 function encodeQuery(query) {
@@ -755,11 +758,11 @@ var EventEmitter = require('events').EventEmitter;
 
 function DocumentStream(response) {
   EventEmitter.call(this);
+
   this.isStopped = false;
 
-  var self = this;
+  var self = this, buffer;
 
-  var buffer;
   response.on('data', function (chunk) {
     self.emit('data', chunk);
 
@@ -785,7 +788,8 @@ function DocumentStream(response) {
       index += Buffer.byteLength(json) + 1;
     }
 
-    if (index) buffer = buffer.slice(index);
+    if (index)
+      buffer = buffer.slice(index);
   });
 
   response.on('end', function () {
