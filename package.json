@@ -2,7 +2,7 @@
   "name": "then-couchdb",
   "version": "0.4.3",
   "description": "A promise-based CouchDB client",
-  "main": "lib/index.js",
+  "main": "modules/index.js",
   "dependencies": {
     "when": "2.0.x",
     "then-redis": "0.3.x"
