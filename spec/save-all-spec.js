@@ -19,7 +19,7 @@ describe('saveAll', function () {
       return db.saveAll(docs).then(function (newDocs) {
         var newRevs = newDocs.map(getRev);
         newRevs.forEach(function (rev, i) {
-          assert.notEqual(rev, revs[i]);
+          expect(rev).toNotEqual(revs[i]);
         });
       });
     });
@@ -41,7 +41,7 @@ describe('saveAll', function () {
       return db.saveAll(docs).then(function (newDocs) {
         var newRevs = newDocs.map(getRev);
         newRevs.forEach(function (rev, i) {
-          assert.notEqual(rev, revs[i]);
+          expect(rev).toNotEqual(revs[i]);
         });
       });
     });
@@ -100,7 +100,7 @@ describe('saveAll', function () {
 
         return RSVP.resolve(cache.get(keys)).then(function (values) {
           values.forEach(function (value) {
-            assert.equal(value, undefined);
+            expect(value).toEqual(undefined);
           });
         });
       });

@@ -23,7 +23,7 @@ describe('get', function () {
   describe('when a document with the given key does not exist', function () {
     it('returns null', function () {
       return db.get('does-not-exist').then(function (doc) {
-        assert.strictEqual(doc, null);
+        expect(doc).toBe(null);
       });
     });
   });
@@ -57,9 +57,9 @@ describe('get', function () {
       });
 
       it('hits the cache', function () {
-        assert.equal(cache.hits, 0);
+        expect(cache.hits).toEqual(0);
         return db.get(doc._id).then(function (newDoc) {
-          assert.equal(cache.hits, 1);
+          expect(cache.hits).toEqual(1);
         });
       });
     });
@@ -67,7 +67,7 @@ describe('get', function () {
     describe('when a document with the given key does not exist', function () {
       it('returns null', function () {
         return db.get('does-not-exist').then(function (doc) {
-          assert.strictEqual(doc, null);
+          expect(doc).toBe(null);
         });
       });
     });

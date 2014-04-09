@@ -28,8 +28,8 @@ describe('getAll', function () {
   describe('when a key is missing', function () {
     it('returns null', function () {
       return db.getAll([ 'does-not-exist' ]).then(function (newDocs) {
-        assert.equal(newDocs.length, 1);
-        assert.strictEqual(newDocs[0], null);
+        expect(newDocs.length).toEqual(1);
+        expect(newDocs[0]).toBe(null);
       });
     });
   });
@@ -69,9 +69,9 @@ describe('getAll', function () {
       });
 
       it('hits the cache', function () {
-        assert.equal(cache.hits, 0);
+        expect(cache.hits).toEqual(0);
         return db.getAll(keys).then(function (newDocs) {
-          assert.equal(cache.hits, keys.length);
+          expect(cache.hits).toEqual(keys.length);
         });
       });
     });
@@ -89,16 +89,16 @@ describe('getAll', function () {
 
       it('returns the existing documents and null for the missing document', function () {
         return db.getAll(keys).then(function (newDocs) {
-          assert.equal(newDocs.length, 2);
+          expect(newDocs.length).toEqual(2);
           compareDocs(newDocs[0], docs[0]);
-          assert.strictEqual(newDocs[1], null);
+          expect(newDocs[1]).toBe(null);
         });
       });
 
       it('hits the cache for existing documents', function () {
-        assert.equal(cache.hits, 0);
+        expect(cache.hits).toEqual(0);
         return db.getAll(keys).then(function (newDocs) {
-          assert.equal(cache.hits, 1);
+          expect(cache.hits).toEqual(1);
         });
       });
     });

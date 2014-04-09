@@ -13,7 +13,7 @@ function describeCache(cache) {
   describe('when it does not contain a given key', function () {
     it('returns undefined', function () {
       return RSVP.resolve(cache.get([ 'a-key' ])).then(function (values) {
-        assert.deepEqual(values, [ undefined ]);
+        expect(values).toEqual([ undefined ]);
       });
     });
   });
@@ -27,7 +27,7 @@ function describeCache(cache) {
 
     it('returns the value of that key', function () {
       return RSVP.resolve(cache.get([ 'a-key' ])).then(function (values) {
-        assert.deepEqual(values, [ value ]);
+        expect(values).toEqual([ value ]);
       });
     });
   });
@@ -43,7 +43,7 @@ function describeCache(cache) {
 
     it('returns values for those that are defined and undefined for those that are not', function () {
       return RSVP.resolve(cache.get([ 'a', 'b', 'd' ])).then(function (values) {
-        assert.deepEqual(values, [ 'a', 'b', undefined ]);
+        expect(values).toEqual([ 'a', 'b', undefined ]);
       });
     });
   });
@@ -61,7 +61,7 @@ function describeCache(cache) {
 
     it('returns undefined', function () {
       return RSVP.resolve(cache.get([ 'a-key' ])).then(function (values) {
-        assert.deepEqual(values, [ undefined ]);
+        expect(values).toEqual([ undefined ]);
       });
     });
   });

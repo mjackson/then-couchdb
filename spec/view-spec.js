@@ -15,8 +15,8 @@ describe('view', function () {
     it('returns no rows', function () {
       return db.view('spec/by-id').then(function (view) {
         assert(view);
-        assert.equal(view.total_rows, 0);
-        assert.deepEqual(view.rows, []);
+        expect(view.total_rows).toEqual(0);
+        expect(view.rows).toEqual([]);
       });
     });
   });

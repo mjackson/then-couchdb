@@ -75,7 +75,7 @@ describe('save', function () {
 
       it('does not store the document in cache', function () {
         return RSVP.resolve(cache.get([ doc._id ])).then(function (values) {
-          assert.deepEqual(values, [ undefined ]);
+          expect(values).toEqual([ undefined ]);
         });
       });
     });

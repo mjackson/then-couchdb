@@ -10,7 +10,7 @@ describe('uuids', function () {
     });
 
     it('returns 5 uuids', function () {
-      assert.equal(uuids.length, 5);
+      expect(uuids.length).toEqual(5);
     });
 
     describe('and then 20 more', function () {
@@ -21,7 +21,7 @@ describe('uuids', function () {
       });
 
       it('returns 20 uuids', function () {
-        assert.equal(uuids.length, 20);
+        expect(uuids.length).toEqual(20);
       });
     });
   });
@@ -30,7 +30,7 @@ describe('uuids', function () {
 describe('uuid', function () {
   it('returns a new UUID', function () {
     return db.uuid().then(function (uuid) {
-      assert.equal(typeof uuid, 'string');
+      expect(typeof uuid).toEqual('string');
     });
   });
 });

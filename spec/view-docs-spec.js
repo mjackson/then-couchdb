@@ -6,7 +6,7 @@ describe('viewDocs', function () {
       return db.viewDocs('spec/by-id', { keys: [ 'a', 'b', 'c' ] }).then(function (docs) {
         assert(docs);
         assert(Array.isArray(docs));
-        assert.equal(docs.length, 0);
+        expect(docs.length).toEqual(0);
       });
     });
   });

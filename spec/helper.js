@@ -1,4 +1,5 @@
 assert = require('assert');
+expect = require('expect');
 couchdb = require('../modules');
 
 // Override mocha's built-in methods with promise-aware versions.

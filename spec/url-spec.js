@@ -9,7 +9,7 @@ describe('url', function () {
 
   describe('when not using a database', function () {
     it('does not have a path', function () {
-      assert.equal(client.url, url);
+      expect(client.url).toEqual(url);
     });
   });
 
@@ -21,7 +21,7 @@ describe('url', function () {
     });
 
     it('includes the database in the path', function () {
-      assert.equal(client.url, url + '/' + database);
+      expect(client.url).toEqual(url + '/' + database);
     });
   });
 });
