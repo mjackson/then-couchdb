@@ -42,15 +42,13 @@ RedisCache.prototype.get = function (keys) {
 RedisCache.prototype.set = function (key, value) {
   var ttl = this.filter(value);
 
-  if (typeof ttl === 'number' && ttl > 0) {
+  if (typeof ttl === 'number' && ttl > 0)
     return this.redis.psetex(key, ttl, JSON.stringify(value));
-  }
 };
 
 RedisCache.prototype.purge = function (keys) {
-  if (keys === undefined) {
+  if (keys === undefined)
     return this.redis.flushdb();
-  }
 
   return this.redis.send('del', keys);
 };

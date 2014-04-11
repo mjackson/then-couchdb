@@ -88,7 +88,6 @@ function purgeBefore(cache, time) {
     return !cache.etimes[key] || cache.etimes[key] < time;
   });
 
-  if (expiredKeys.length) {
+  if (expiredKeys.length)
     cache.purge(expiredKeys);
-  }
 }

@@ -1,5 +1,6 @@
-var FIVE_MINUTES = 1000 * 60 * 5;
 module.exports = Cache;
+
+var ONE_MINUTE = 1000 * 60;
 
 /**
  * Implements a caching mechanism for CouchDB clients. This class is designed
@@ -22,7 +23,7 @@ function Cache(options) {
  * not added to the cache.
  */
 Cache.defaultFilter = function (value) {
-  return FIVE_MINUTES; // Default behavior is to cache all values.
+  return ONE_MINUTE; // Default behavior is to cache all values.
 };
 
 /**
