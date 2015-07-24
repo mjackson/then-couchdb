@@ -174,6 +174,10 @@ Client.prototype.rootRequest = function (options) {
     }
   });
 
+  request.on('error', function(err) {
+    deferred.reject(err);
+  });
+
   var content = options.content || options.body; // body is deprecated
 
   if (content) {
